@@ -57,4 +57,31 @@ public class ConstantUtil {
         }
         return ret;
     }
+
+    public static int[] irDataStringToByte(String code){
+        code += ",";
+        char[] tempCharArray = new char[5];
+        int index = 0;
+        int length = 0;
+        char tempChar;
+        int[] result = null;
+        for(int i = 0;i < code.length();i++){
+            if((tempChar = code.charAt(i)) == ','){
+                if(length == 0){
+                    length = codeArrayToInt(tempCharArray,index - 1);
+                    result = new int[length + 1];
+                    result[0] = length;
+                    length = 1;
+                }else{
+                    result[length] = codeArrayToInt(tempCharArray,index - 1);
+                    length ++;
+                }
+                index = 0;
+            }else{
+                tempCharArray[index] =tempChar;
+                index ++;
+            }
+        }
+        return result;
+    }
 }

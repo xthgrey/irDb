@@ -1,10 +1,10 @@
-apply plugin: 'com.android.application'
-//apply plugin: 'com.android.library'
+//apply plugin: 'com.android.application'
+apply plugin: 'com.android.library'
 
 android {
     compileSdkVersion 26
     defaultConfig {
-        applicationId "com.xth.irdb"
+//        applicationId "com.xth.irdb"
         minSdkVersion 15
         targetSdkVersion 26
         versionCode 1
@@ -27,20 +27,20 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
 }
-//def SDK_BASENAME = "irdbdataread";
-//def SDK_VERSION = "_V1.0";
-//def sdkDestinationPath = "build";
-//def zipFile = file('build/intermediates/bundles/release/classes.jar')
-//
-//task deleteBuild(type: Delete) {
-//    delete sdkDestinationPath + SDK_BASENAME + SDK_VERSION + ".jar"
-//}
-//
-//task makeJar(type: Jar) {
-//    from zipTree(zipFile)
-////    from fileTree(dir: 'src/main',includes: ['assets/**'])//将assets目录打入jar包
-//    baseName = SDK_BASENAME + SDK_VERSION
-//    destinationDir = file(sdkDestinationPath)
-//}
-//
-//makeJar.dependsOn(deleteBuild, build)
+def SDK_BASENAME = "irdbdataread";
+def SDK_VERSION = "_V1.0";
+def sdkDestinationPath = "build";
+def zipFile = file('build/intermediates/bundles/release/classes.jar')
+
+task deleteBuild(type: Delete) {
+    delete sdkDestinationPath + SDK_BASENAME + SDK_VERSION + ".jar"
+}
+
+task makeJar(type: Jar) {
+    from zipTree(zipFile)
+//    from fileTree(dir: 'src/main',includes: ['assets/**'])//将assets目录打入jar包
+    baseName = SDK_BASENAME + SDK_VERSION
+    destinationDir = file(sdkDestinationPath)
+}
+
+makeJar.dependsOn(deleteBuild, build)
