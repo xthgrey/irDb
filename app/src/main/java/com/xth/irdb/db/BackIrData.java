@@ -32,7 +32,7 @@ public class BackIrData {
         manualWind = 2;
         autoWind = 1;
         power = 0;
-         mode = 1;
+        mode = 1;
     }
 
 //    private final class AirData {
@@ -126,67 +126,68 @@ public class BackIrData {
 //    }
 
     private byte[] airContolData(int key) {
-            byte[] result = new byte[7];
-            result[5] = (byte) (key + 1);
-            switch (key) {
-                case Constants.IR_AIR_CLASS.AIR_POWER://电源
-                    if (power == 0) {
-                        power = 1;
-                    } else if (power == 1) {
-                        power = 0;
-                    }
-                    result[4] = (byte) power;
-                    break;
-                case Constants.IR_AIR_CLASS.AIR_MODE://模式
-                    if (mode < 5) {
-                        mode++;
-                    } else {
-                        mode = 1;
-                    }
-                    result[6] = (byte) mode;
-                    break;
-                case Constants.IR_AIR_CLASS.AIR_VOL://风量
-                    if (blowVol < 4) {
-                        blowVol++;
-                    } else {
-                        blowVol = 1;
-                    }
-                    result[1] = (byte) blowVol;
-                    break;
-                case Constants.IR_AIR_CLASS.AIR_M://手动风向
-                    if (manualWind > 1) {
-                        manualWind--;
-                    } else {
-                        manualWind = 3;
-                    }
-                    result[2] = (byte) manualWind;
-                    break;
-                case Constants.IR_AIR_CLASS.AIR_A://自动风向
-                    if (autoWind == 0) {
-                        autoWind = 1;
-                    } else if (autoWind == 1) {
-                        autoWind = 0;
-                    }
-                    result[3] = (byte) autoWind;
-                    break;
-                case Constants.IR_AIR_CLASS.AIR_TMP_ADD://温度＋
-                    if (temperature < 30) {
-                        temperature++;
-                    }
-                    result[0] = (byte) temperature;
-                    break;
-                case Constants.IR_AIR_CLASS.AIR_TMP_RED://温度－
-                    if (temperature > 16) {
-                        temperature--;
-                    }
-                    result[0] = (byte) temperature;
-                    break;
-                default:
-                    break;
+        byte[] result = new byte[7];
+        result[5] = (byte) (key + 1);
+        switch (key) {
+            case Constants.IR_AIR_CLASS.AIR_POWER://电源
+                if (power == 0) {
+                    power = 1;
+                } else if (power == 1) {
+                    power = 0;
+                }
+                result[4] = (byte) power;
+                break;
+            case Constants.IR_AIR_CLASS.AIR_MODE://模式
+                if (mode < 5) {
+                    mode++;
+                } else {
+                    mode = 1;
+                }
+                result[6] = (byte) mode;
+                break;
+            case Constants.IR_AIR_CLASS.AIR_VOL://风量
+                if (blowVol < 4) {
+                    blowVol++;
+                } else {
+                    blowVol = 1;
+                }
+                result[1] = (byte) blowVol;
+                break;
+            case Constants.IR_AIR_CLASS.AIR_M://手动风向
+                if (manualWind > 1) {
+                    manualWind--;
+                } else {
+                    manualWind = 3;
+                }
+                result[2] = (byte) manualWind;
+                break;
+            case Constants.IR_AIR_CLASS.AIR_A://自动风向
+                if (autoWind == 0) {
+                    autoWind = 1;
+                } else if (autoWind == 1) {
+                    autoWind = 0;
+                }
+                result[3] = (byte) autoWind;
+                break;
+            case Constants.IR_AIR_CLASS.AIR_TMP_ADD://温度＋
+                if (temperature < 30) {
+                    temperature++;
+                }
+                result[0] = (byte) temperature;
+                break;
+            case Constants.IR_AIR_CLASS.AIR_TMP_RED://温度－
+                if (temperature > 16) {
+                    temperature--;
+                }
+                result[0] = (byte) temperature;
+                break;
+            default:
+                break;
 
-            }
-            return result;
         }
+        return result;
+    }
+
     public byte[] analyzeData(int electricType, byte[] irData, int key) {
         byte checkSum = 0;
         byte[] tempArray = null;

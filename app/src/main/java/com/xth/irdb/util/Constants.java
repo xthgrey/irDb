@@ -54,8 +54,8 @@ public class Constants {
     }
 
     public final class IR_FANS_CLASS {
-        public static final int FANS_ON_OFF = 0;   //开关
-        public static final int FANS_ON_SPEED = 1;   //开／风速
+        public static final int FANS_POWER = 0;   //电源
+        public static final int FANS_SPEED = 1;   //风速
         public static final int FANS_SHAKE = 2;   //摇头
         public static final int FANS_MODE = 3;   //风类（模式）
         public static final int FANS_TIMER = 4;   //定时
