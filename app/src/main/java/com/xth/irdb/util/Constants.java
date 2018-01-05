@@ -15,56 +15,52 @@ public class Constants {
             {"all_pjt_one_key", "all_fan_one_key", "brand_stb_one_key", "brand_dvd_one_key", "all_IPTV_one_key", "brand_tv_one_key", "all_arc_one_key", "all_SLR_one_key", "all_air_purifier_one_key", "all_Water_Heater_one_key", "brand_Audio_one_key"}
     };
 
-    public static final int modelMatch = 0;//型号匹配
-    public static final int intelligentIndex = 1;//智能索引
-    public static final int oneKeyMatch = 2;//一键匹配
+    public static final int IR_PJT = 0;//投影仪
+    public static final int IR_FANS = 1;//风扇
+    public static final int IR_STB = 2;//机顶盒
+    public static final int IR_DVD = 3;//dvd
+    public static final int IR_IPTV = 4;//网络机顶盒
+    public static final int IR_TV = 5;//电视
+    public static final int IR_AIR = 6;//空调
+    public static final int IR_DC = 7;//单反
+    public static final int IR_AP = 8;//空气净化器
+    public static final int IR_WATER = 9;//热水器
+    public static final int IR_AUDIO = 10;//音响
 
-    public static final int pjt = 0;//投影仪
-    public static final int fans = 1;//风扇
-    public static final int stb = 2;//机顶盒
-    public static final int dvd = 3;//dvd
-    public static final int iptv = 4;//网络机顶盒
-    public static final int tv = 5;//电视
-    public static final int air = 6;//空调
-    public static final int dc = 7;//单反
-    public static final int ap = 8;//空气净化器
-    public static final int water = 9;//热水器
-    public static final int audio = 10;//音响
-
-    public final class PJT {
-        public static final int PJT_On = 0;   //开机
-        public static final int PJT_Off = 1;   //关机
-        public static final int PJT_Computer = 2;   //电脑
-        public static final int PJT_Video = 3;  //视频
-        public static final int PJT_SignalSource = 4;  //信号源
-        public static final int PJT_FocusAdd = 5;  //变焦＋
-        public static final int PJT_FocusRed = 6;  //变焦－
-        public static final int PJT_PictureAdd = 7;  //画面＋
-        public static final int PJT_PictureRed = 8;  //画面－
-        public static final int PJT_Menu = 9;  //菜单
-        public static final int PJT_Confirm = 10;  //确认
-        public static final int PJT_Up = 11;  //上
-        public static final int PJT_Left = 12; //左
-        public static final int PJT_Right = 13;  //右
-        public static final int PJT_Down = 14;//下
-        public static final int PJT_Quit = 15; //退出
-        public static final int PJT_VolAdd = 16; //音量＋
-        public static final int PJT_VolRed = 17; //音量－
-        public static final int PJT_Mute = 18;//静音
-        public static final int PJT_Auto = 19; //自动
-        public static final int PJT_Pause = 20; //暂停
+    public final class IR_PJT_CLASS {
+        public static final int PJT_ON = 0;   //开机
+        public static final int PJT_OFF = 1;   //关机
+        public static final int PJT_COMPUTER = 2;   //电脑
+        public static final int PJT_VIDEO = 3;  //视频
+        public static final int PJT_SIGNALSOURCE = 4;  //信号源
+        public static final int PJT_FOCUSADD= 5;  //变焦＋
+        public static final int PJT_FOCUSRED = 6;  //变焦－
+        public static final int PJT_PICTUREADD = 7;  //画面＋
+        public static final int PJT_PICTURERED = 8;  //画面－
+        public static final int PJT_MENU = 9;  //菜单
+        public static final int PJT_CONFIRM = 10;  //确认
+        public static final int PJT_UP = 11;  //上
+        public static final int PJT_LEFT = 12; //左
+        public static final int PJT_RIGHT = 13;  //右
+        public static final int PJT_DOWN = 14;//下
+        public static final int PJT_QUIT = 15; //退出
+        public static final int PJT_VOLADD = 16; //音量＋
+        public static final int PJT_VOLRED = 17; //音量－
+        public static final int PJT_MUTE = 18;//静音
+        public static final int PJT_AUTO = 19; //自动
+        public static final int PJT_PAUSE = 20; //暂停
         public static final int PJT_MCD = 21; //亮度
 
     }
 
-    public final class FANS {
-        public static final int FANS_On_Off = 0;   //开关
-        public static final int FANS_On_speed = 1;   //开／风速
-        public static final int FANS_Shake = 2;   //摇头
-        public static final int FANS_Mode = 3;   //风类（模式）
-        public static final int FANS_Timer = 4;   //定时
-        public static final int FANS_Light = 5;  //灯光
-        public static final int FANS_Anion = 6; //负离子
+    public final class IR_FANS_CLASS {
+        public static final int FANS_ON_OFF = 0;   //开关
+        public static final int FANS_ON_SPEED = 1;   //开／风速
+        public static final int FANS_SHAKE = 2;   //摇头
+        public static final int FANS_MODE = 3;   //风类（模式）
+        public static final int FANS_TIMER = 4;   //定时
+        public static final int FANS_LIGHT = 5;  //灯光
+        public static final int FANS_ANION = 6; //负离子
         public static final int FANS_1 = 7; //1
         public static final int FANS_2 = 8; //2
         public static final int FANS_3 = 9; //3
@@ -74,16 +70,16 @@ public class Constants {
         public static final int FANS_7 = 13; //7
         public static final int FANS_8 = 14; //8
         public static final int FANS_9 = 15; //9
-        public static final int FANS_Sleep = 16;  //睡眠
-        public static final int FANS_Cold = 17; //制冷
-        public static final int FANS_AirVol = 18; //风量
-        public static final int FANS_LowSpeed = 19; //低速
-        public static final int FANS_MiddleSpeed = 20; //中速
-        public static final int FANS_HighSpeed = 21;  //高速
+        public static final int FANS_SLEEP = 16;  //睡眠
+        public static final int FANS_COLD = 17; //制冷
+        public static final int FANS_AIRVOL = 18; //风量
+        public static final int FANS_LOW_SPEED = 19; //低速
+        public static final int FANS_MIDDLE_SPEED = 20; //中速
+        public static final int FANS_HIGH_SPEED = 21;  //高速
     }
 
-    public final class STB {
-        public static final int STB_Wait = 0;  //待机
+    public final class IR_STB_CLASS {
+        public static final int STB_WAIT = 0;  //待机
         public static final int STB_1 = 1;  //1
         public static final int STB_2 = 2; //2
         public static final int STB_3 = 3; //3
@@ -93,56 +89,56 @@ public class Constants {
         public static final int STB_7 = 7;//7
         public static final int STB_8 = 8; //8
         public static final int STB_9 = 9; //9
-        public static final int STB_Lead = 10;//导视
+        public static final int STB_LEAD = 10;//导视
         public static final int STB_0 = 11; //0
-        public static final int STB_Back = 12; //返回
-        public static final int STB_Up = 13; //上
-        public static final int STB_Left = 14; //左
-        public static final int STB_Comfirm = 15; //确定
-        public static final int STB_Right = 16; //右
-        public static final int STB_Down = 17; //下
-        public static final int STB_VolAdd = 18; //声音＋
-        public static final int STB_VolRed = 19; //声音－
-        public static final int STB_ChAdd = 20; //频道＋
-        public static final int STB_ChRed = 21; //频道－
-        public static final int STB_Menu = 22; //菜单
+        public static final int STB_BACK = 12; //返回
+        public static final int STB_UP = 13; //上
+        public static final int STB_LEFT = 14; //左
+        public static final int STB_CONFIRM = 15; //确定
+        public static final int STB_RIGHT = 16; //右
+        public static final int STB_DOWN = 17; //下
+        public static final int STB_VOLADD = 18; //声音＋
+        public static final int STB_VOLRED = 19; //声音－
+        public static final int STB_CHADD = 20; //频道＋
+        public static final int STB_CHRED = 21; //频道－
+        public static final int STB_MENU = 22; //菜单
     }
 
-    public final class DVD {
-        public static final int DVD_Left = 0;   //左
-        public static final int DVD_Up = 1;   //上
-        public static final int DVD_Ok = 2;  //ok
-        public static final int DVD_Down = 3;   //下
-        public static final int DVD_Right = 4;   //右
-        public static final int DVD_Power = 5;  //电源
-        public static final int DVD_Mute = 6; //静音
-        public static final int DVD_FBack = 7;  //快倒
+    public final class IR_DVD_CLASS {
+        public static final int DVD_LEFT = 0;   //左
+        public static final int DVD_UP = 1;   //上
+        public static final int DVD_OK = 2;  //ok
+        public static final int DVD_DOWN = 3;   //下
+        public static final int DVD_RIGHT = 4;   //右
+        public static final int DVD_POWER = 5;  //电源
+        public static final int DVD_MUTE = 6; //静音
+        public static final int DVD_FAST_BACK = 7;  //快倒
         public static final int DVD_Play = 8; //播放
-        public static final int DVD_FForwad = 9;  //快进
-        public static final int DVD_Last = 10;  //上一曲
-        public static final int DVD_Stop = 11; //停止
-        public static final int DVD_Next = 12;  //下一曲
-        public static final int DVD_Format = 13;  //制式
-        public static final int DVD_Pause = 14; //暂停
-        public static final int DVD_Title = 15; //标题
+        public static final int DVD_FAST_FORWORD = 9;  //快进
+        public static final int DVD_LAST = 10;  //上一曲
+        public static final int DVD_STOP = 11; //停止
+        public static final int DVD_NEXT = 12;  //下一曲
+        public static final int DVD_FORMAT = 13;  //制式
+        public static final int DVD_PAUSE = 14; //暂停
+        public static final int DVD_TITLE = 15; //标题
         public static final int DVD_SK = 16; //开关仓
-        public static final int DVD_Menu = 17;  //静音
-        public static final int DVD_Back = 18;   //返回
+        public static final int DVD_MENU = 17;  //菜单
+        public static final int DVD_BACK = 18;   //返回
     }
 
-    public final class IPTV {
-        public static final int IPTV_Power = 0;  //电源
-        public static final int IPTV_Mute = 1;  //静音
-        public static final int IPTV_VolAdd = 2;  //音量＋
-        public static final int IPTV_VolRed = 3;  //音量－
-        public static final int IPTV_ChAdd = 4;  //频道＋
-        public static final int IPTV_ChRed = 5; //频道-
-        public static final int IPTV_Up = 6; //上
-        public static final int IPTV_Left = 7; //左
+    public final class IR_IPTV_CLASS {
+        public static final int IPTV_POWER = 0;  //电源
+        public static final int IPTV_MUTE = 1;  //静音
+        public static final int IPTV_VOLADD = 2;  //音量＋
+        public static final int IPTV_VOLRED = 3;  //音量－
+        public static final int IPTV_CHADD = 4;  //频道＋
+        public static final int IPTV_CHRED = 5; //频道-
+        public static final int IPTV_UP = 6; //上
+        public static final int IPTV_LEFT = 7; //左
         public static final int IPTV_OK = 8; //OK
-        public static final int IPTV_Right = 9; //右
-        public static final int IPTV_Down = 10; //下
-        public static final int IPTV_Play = 11; //播放／暂停
+        public static final int IPTV_RIGHT = 9; //右
+        public static final int IPTV_DOWN = 10; //下
+        public static final int IPTV_PLAY = 11; //播放／暂停
         public static final int IPTV_1 = 12; //1
         public static final int IPTV_2 = 13; //2
         public static final int IPTV_3 = 14; //3
@@ -157,14 +153,14 @@ public class Constants {
 
     }
 
-    public final class TV {
-        public static final int TV_VolAdd = 0;//声音＋
-        public static final int TV_ChAdd = 1;//频道＋
-        public static final int TV_Menu = 2;//菜单
-        public static final int TV_ChRed = 3;//频道－
-        public static final int TV_VolRed = 4;//声音－
-        public static final int TV_Power = 5;//电源
-        public static final int TV_Mute = 6;//静音
+    public final class IR_TV_CLASS {
+        public static final int TV_VOLADD = 0;//声音＋
+        public static final int TV_CHADD = 1;//频道＋
+        public static final int TV_MENU = 2;//菜单
+        public static final int TV_CHRED = 3;//频道－
+        public static final int TV_VOLRED = 4;//声音－
+        public static final int TV_POWER = 5;//电源
+        public static final int TV_MUTE = 6;//静音
         public static final int TV_1 = 7;//1
         public static final int TV_2 = 8;//2
         public static final int TV_3 = 9;//3
@@ -177,52 +173,52 @@ public class Constants {
         public static final int TV_Res = 16;//--/-
         public static final int TV_0 = 17;//0
         public static final int TV_AV_TV = 18;//AV/TV
-        public static final int TV_Back = 19;//返回
-        public static final int TV_Comfirm = 20;//确定
-        public static final int TV_Up = 21;//上
-        public static final int TV_Left = 22;//左
-        public static final int TV_Right = 23;//右
-        public static final int TV_Down = 24;//下
+        public static final int TV_BACK = 19;//返回
+        public static final int TV_CONFIRM = 20;//确定
+        public static final int TV_UP = 21;//上
+        public static final int TV_LEFT = 22;//左
+        public static final int TV_RIGHT = 23;//右
+        public static final int TV_DOWN = 24;//下
     }
 
-    public final class AIR {
-        public static final int AIR_Power = 0;  //电源
-        public static final int AIR_Mode = 1;  //模式
-        public static final int AIR_Vol = 2;  //风量
+    public final class IR_AIR_CLASS {
+        public static final int AIR_POWER = 0;  //电源
+        public static final int AIR_MODE = 1;  //模式
+        public static final int AIR_VOL = 2;  //风量
         public static final int AIR_M = 3; //手动风向
         public static final int AIR_A = 4; //自动风向
-        public static final int AIR_tmpAdd = 5;  //温度＋
-        public static final int AIR_tmpRed = 6; //温度－
+        public static final int AIR_TMP_ADD = 5;  //温度＋
+        public static final int AIR_TMP_RED = 6; //温度－
     }
 
-    public final class DC {
+    public final class IR_DC_CLASS {
         public static final int DC_TPIC = 0;  //拍照
     }
 
-    public final class AP {
-        public static final int AP_Power = 0;  //电源
-        public static final int AP_Auto = 1;  //自动
-        public static final int AP_AirVol = 2;  //风量
-        public static final int AP_Timer = 3;  //定时
-        public static final int AP_Mode = 4; //模式
-        public static final int AP_Anion = 5; //负离子
-        public static final int AP_Comfort = 6; //舒适
-        public static final int AP_Mute = 7; //静音
+    public final class IR_AP_CLASS {
+        public static final int AP_POWER = 0;  //电源
+        public static final int AP_AUTO = 1;  //自动
+        public static final int AP_AIRVOL = 2;  //风量
+        public static final int AP_TIMER = 3;  //定时
+        public static final int AP_MODE = 4; //模式
+        public static final int AP_ANION = 5; //负离子
+        public static final int AP_COMFORT = 6; //舒适
+        public static final int AP_MUTE = 7; //静音
     }
-    public final class WATER {
-        public static final int WH_Power   = 0;  //电源
-        public static final int WH_Set     = 1;  //设置
-        public static final int WH_TemAdd  = 2;  //温度＋
-        public static final int WH_TemRed  = 3;  //温度－
-        public static final int WH_Mode    = 4;  //模式
-        public static final int WH_Confirm = 5; //确定
-        public static final int WH_Timer   = 6; //定时
-        public static final int WH_Ant     = 7 ;//预约
-        public static final int WH_Time    = 8; //时间
-        public static final int WH_Stem    = 9; //保温
+    public final class IR_WATER_CLASS {
+        public static final int WH_POWER   = 0;  //电源
+        public static final int WH_SET     = 1;  //设置
+        public static final int WH_TMP_ADD  = 2;  //温度＋
+        public static final int WH_TMP_RED  = 3;  //温度－
+        public static final int WH_MODE    = 4;  //模式
+        public static final int WH_CONFIRM = 5; //确定
+        public static final int WH_TIMER   = 6; //定时
+        public static final int WH_ANT     = 7 ;//预约
+        public static final int WH_TIME    = 8; //时间
+        public static final int WH_STEM    = 9; //保温
 
     }
-    public final class AUDIO {
+    public final class IR_AUDIO_CLASS {
         public static final int AUDIO_LEFT = 0;//左
         public static final int AUDIO_UP = 1;//上
         public static final int AUDIO_OK = 2;//ok

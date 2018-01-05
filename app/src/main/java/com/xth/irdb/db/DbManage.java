@@ -22,7 +22,7 @@ import java.io.InputStream;
 public class DbManage {
     private static final String DbName = "irlibaray.db";
     private static final String PacketName = "com.drkon.sh.innolumi.inno_lumi_text";
-//    private static final String PacketName = "com.xth.irdb";
+    //    private static final String PacketName = "com.xth.irdb";
     private static final String DbPath = "/data" + Environment.getDataDirectory().getAbsolutePath() + "/" + PacketName;
     private static final String DbPathName = DbPath + "/" + DbName;
     private SQLiteDatabase database;
@@ -84,7 +84,6 @@ public class DbManage {
         String createTable = "create table " + tableName + " (" +
                 "ID integer primary key autoincrement," +
                 "SERIAL integer," +
-                "MATCHTYPE integer," +
                 "ELECTRICTYPE integer," +
                 "CODE blob)";
         Cursor cursor = database.rawQuery("select name from sqlite_master where type='table' order by name", null);
@@ -106,7 +105,6 @@ public class DbManage {
         //实例化常量值
         ContentValues cValue = new ContentValues();
         cValue.put("SERIAL", serial);
-        cValue.put("MATCHTYPE", matchType);
         cValue.put("ELECTRICTYPE", electricType);
         cValue.put("CODE", code);
         database.insert(Constants.dynamic_ir_data, null, cValue);
@@ -116,19 +114,12 @@ public class DbManage {
         database.delete(Constants.dynamic_ir_data, "SERIAL = ?", new String[]{serial + ""});
     }
 
-    protected byte[] matchDb(int matchType, int electricType, int serial) {
-        byte[] code = null;
-        switch (matchType) {
-            case Constants.modelMatch:
-                code = modelMatch(electricType, getModeMatchIdSerial(electricType, serial));
-                break;
-            case Constants.intelligentIndex:
-                code = modelMatch(electricType, intelligentSerial[serial + 1]);
-                break;
-            default:
-                break;
-        }
-        return code;
+    protected byte[] matchDb(int electricType, int serial) {
+        return modelMatch(electricType, getModeMatchIdSerial(electricType, serial));
+    }
+
+    protected byte[] intelligentDb(int electricType, int lengthIndex) {
+        return intelligentIndex(electricType, lengthIndex);
     }
 
     private int getModeMatchIdSerial(int electricType, int serial) {
@@ -162,29 +153,29 @@ public class DbManage {
         return code;
     }
 
-    protected byte[] getOneKeyMatchSerial(int electricType, byte[] learnData,int brandIndex) {
+    protected byte[] getOneKeyMatchSerial(int electricType, byte[] learnData, int brandIndex) {
         int lastSameCounter = 0;
         int serial = 0;
         Cursor cursor = null;
-        if(electricType == Constants.stb || electricType == Constants.dvd || electricType == Constants.tv || electricType == Constants.audio){
+        if (electricType == Constants.IR_STB || electricType == Constants.IR_DVD || electricType == Constants.IR_TV || electricType == Constants.IR_AUDIO) {
             cursor = database.query(Constants.fileName[1][electricType], null, "SERIAL = ?", new String[]{brandIndex + ""}, null, null, null);
             String brandCn = cursor.getString(2);
 
             cursor = database.query(Constants.fileName[3][electricType], null, "BRANDCN = ?", new String[]{brandCn}, null, null, null);
             int brandSerial = -1;
             while (cursor.moveToNext()) {
-                brandSerial ++;
+                brandSerial++;
                 byte[] code = cursor.getBlob(5);
                 int sameCounter = compareIrData(code, learnData);
                 if (sameCounter > lastSameCounter) {
                     lastSameCounter = sameCounter;
-                    serial =brandSerial;
+                    serial = brandSerial;
                 }
             }
             cursor.close();
-            getIntelligentIndexLength(electricType,brandIndex);
+            getIntelligentIndexLength(electricType, brandIndex);
             return modelMatch(electricType, intelligentSerial[serial + 1]);
-        }else{
+        } else {
             cursor = database.query(Constants.fileName[3][electricType], null, null, null, null, null, null);
             while (cursor.moveToNext()) {
                 byte[] code = cursor.getBlob(5);
@@ -220,13 +211,13 @@ public class DbManage {
                                 sameCount++;
                             }
                         } else {
-                            if(!ffFlag){
+                            if (!ffFlag) {
                                 float absResult = Math.abs(revData[i] - dbData[i]) / (float) revData[i];
                                 if (absResult < 0.2) {
                                     sameCount++;
                                 }
-                            }else{
-                                if(revData[i] == dbData[i]){
+                            } else {
+                                if (revData[i] == dbData[i]) {
                                     sameCount++;
                                 }
                             }
@@ -246,7 +237,7 @@ public class DbManage {
                     if (((revData[i] & 0x0f) == 0x0f) || ((revData[i] & 0xf0) == 0xf0)) {
                         if (((dbData[i] & 0x0f) == 0x0f) || ((dbData[i] & 0xf0) == 0xf0)) {
                             return sameCount;
-                        }else{
+                        } else {
                             return 0;
                         }
                     }
@@ -272,20 +263,20 @@ public class DbManage {
         return code;
     }
 
-//    private byte[] intelligentIndex(int electricType, int lengthIndex) {
-//        Cursor cursor = database.query(Constants.fileName[0][electricType], null, "SERIAL = ?", new String[]{intelligentSerial[lengthIndex + 1] + ""}, null, null, null);
-//        cursor.moveToNext();
-//        int id = cursor.getInt(0);
-//        String brandCn = cursor.getString(2);
-//        String brandEn = cursor.getString(3);
-//        String model = cursor.getString(4);
-//        byte[] code = cursor.getBlob(5);
-//        //使用Log查看数据,未在界面展示
-//        LogUtil.i("fileName:" + Constants.fileName[0][electricType] + "--id:" + id + "---serial:" + intelligentSerial[lengthIndex + 1] + "---getBrandCn:" + brandCn + "---getBrandEn:" + brandEn +
-//                "---model:" + model + "---code:" + ConstantUtil.bytes2HexString(code));
-//        cursor.close();
-//        return code;
-//    }
+    private byte[] intelligentIndex(int electricType, int lengthIndex) {
+        Cursor cursor = database.query(Constants.fileName[0][electricType], null, "SERIAL = ?", new String[]{intelligentSerial[lengthIndex + 1] + ""}, null, null, null);
+        cursor.moveToNext();
+        int id = cursor.getInt(0);
+        String brandCn = cursor.getString(2);
+        String brandEn = cursor.getString(3);
+        String model = cursor.getString(4);
+        byte[] code = cursor.getBlob(5);
+        //使用Log查看数据,未在界面展示
+        LogUtil.i("fileName:" + Constants.fileName[0][electricType] + "--id:" + id + "---serial:" + intelligentSerial[lengthIndex + 1] + "---getBrandCn:" + brandCn + "---getBrandEn:" + brandEn +
+                "---model:" + model + "---code:" + ConstantUtil.bytes2HexString(code));
+        cursor.close();
+        return code;
+    }
 
     protected int getIntelligentIndexLength(int electricType, int serial) {
         intelligentSerial = ConstantUtil.irDataStringToByte(getIntelligentIndexInfo(electricType, serial));
