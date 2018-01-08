@@ -113,7 +113,7 @@ public class Constants {
         public static final int DVD_POWER = 5;  //电源
         public static final int DVD_MUTE = 6; //静音
         public static final int DVD_FAST_BACK = 7;  //快倒
-        public static final int DVD_Play = 8; //播放
+        public static final int DVD_PLAY = 8; //播放
         public static final int DVD_FAST_FORWORD = 9;  //快进
         public static final int DVD_LAST = 10;  //上一曲
         public static final int DVD_STOP = 11; //停止
@@ -196,14 +196,26 @@ public class Constants {
     }
 
     public final class IR_AP_CLASS {
-        public static final int AP_POWER = 0;  //电源
-        public static final int AP_AUTO = 1;  //自动
-        public static final int AP_AIRVOL = 2;  //风量
-        public static final int AP_TIMER = 3;  //定时
-        public static final int AP_MODE = 4; //模式
-        public static final int AP_ANION = 5; //负离子
-        public static final int AP_COMFORT = 6; //舒适
-        public static final int AP_MUTE = 7; //静音
+
+        public static final int AP_POWER = 0;//电源
+        public static final int AP_AUTO = 1;//自动
+        public static final int AP_SPEED = 2;//风速
+        public static final int AP_TIMER = 3;//定时
+        public static final int AP_MODE = 4;//模式
+        public static final int AP_LI = 5;//负离子
+        public static final int AP_FEEL = 6;//舒适
+        public static final int AP_MUTE = 7;//静音
+        public static final int AP_CLOSE_LIGHT = 8;//关灯
+        public static final int AP_STRONG = 9;//强劲
+        public static final int AP_NATIVE = 10;//自然
+        public static final int AP_CLOSE = 11;//关闭
+        public static final int AP_SLEEP = 12;//睡眠
+        public static final int AP_SMART = 13;//智能
+        public static final int AP_LIGHT1 = 14;//灯1
+        public static final int AP_LIGHT2 = 15;//灯2
+        public static final int AP_LIGHT3 = 16;//灯3
+        public static final int AP_UV = 17;//紫外线
+
     }
     public final class IR_WATER_CLASS {
         public static final int WH_POWER   = 0;  //电源
