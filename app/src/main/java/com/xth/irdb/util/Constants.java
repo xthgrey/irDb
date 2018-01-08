@@ -125,6 +125,9 @@ public class Constants {
         public static final int DVD_MENU = 17;  //菜单
         public static final int DVD_BACK = 18;   //返回
     }
+    public final class IR_IPTVEX_CLASS {
+        public static final int IPTV_HOME = 0;  //HOME
+    }
 
     public final class IR_IPTV_CLASS {
         public static final int IPTV_POWER = 0;  //电源
@@ -152,7 +155,9 @@ public class Constants {
         public static final int IPTV_BACK = 22;  //返回
 
     }
-
+    public final class IR_TVEX_CLASS {
+        public static final int TV_HOME = 0;  //HOME
+    }
     public final class IR_TV_CLASS {
         public static final int TV_VOLADD = 0;//声音＋
         public static final int TV_CHADD = 1;//频道＋
