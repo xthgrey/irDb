@@ -33,6 +33,11 @@ public class DbManage {
 
     private AirControlData airControlData;
     private DbData dbData;
+    private DbData dbDataInfo;
+
+    public DbData getDbDataInfo() {
+        return dbDataInfo;
+    }
 
     public DbData getDbData() {
         return dbData;
@@ -46,6 +51,7 @@ public class DbManage {
         openDb();
         airControlData = new AirControlData();
         dbData = new DbData();
+        dbDataInfo = new DbData();
     }
 
     private void openDb() {
@@ -207,10 +213,6 @@ public class DbManage {
         return intelligentIndex(electricType, lengthIndex);
     }
 
-    private DbData dbData2Info;
-    public DbData getDbData2Info() {
-        return dbData2Info;
-    }
     private int getModelMatchIdSerial(int electricType, int serial) {
         Cursor cursor = database.query(Constants.fileName[2][electricType], null, "SERIAL = ?", new String[]{serial + ""}, null, null, null);
         cursor.moveToNext();
@@ -219,8 +221,11 @@ public class DbManage {
         dbData.setBrandEn(cursor.getString(3));
         dbData.setModel(cursor.getString(4));
         dbData.setCodeInt(cursor.getInt(5));
-        dbData2Info = new DbData();
-        dbData2Info = dbData;
+
+        dbDataInfo.setBrandCn(dbData.getBrandCn());
+        dbDataInfo.setBrandEn(dbData.getBrandEn());
+        dbDataInfo.setModel(dbData.getModel());
+
         cursor.close();
         return dbData.getCodeInt();
     }
@@ -233,6 +238,11 @@ public class DbManage {
         dbData.setBrandEn(cursor.getString(3));
         dbData.setModel(cursor.getString(4));
         dbData.setCodeString(cursor.getString(5));
+
+        dbDataInfo.setBrandCn(dbData.getBrandCn());
+        dbDataInfo.setBrandEn(dbData.getBrandEn());
+        dbDataInfo.setModel(dbData.getModel());
+
         cursor.close();
         return dbData.getCodeString();
     }
