@@ -7,6 +7,7 @@ package com.xth.irdb.util;
 public class Constants {
 
     public static final String dynamic_ir_data = "dynamic_ir_data";
+    public static final String air_control_table = "air_control_table";
 
     public static final String[][] fileName = {
             {"stb_pjt_table", "stb_fan_table", "stb_data_table", "dvd_data_table", "remote_IPTV_table", "tv_table", "arc_table", "remote_SLR_table", "remote_air_purifier_table", "remote_Water_Heater_table", "remote_Audio_table"},

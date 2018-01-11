@@ -1,14 +1,11 @@
 package com.xth.irdb.db;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 
+import com.xth.irdb.bean.AirControlData;
 import com.xth.irdb.util.ConstantUtil;
 import com.xth.irdb.util.Constants;
 import com.xth.irdb.util.LogUtil;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by XTH on 2018/1/2.
@@ -17,188 +14,120 @@ import java.util.List;
 public class BackIrData {
     private Context mContext;
     private DbManage dbManage;
-    public int temperature;
-    public int blowVol;
-    public int manualWind;
-    public int autoWind;
-    public int power;
-    public int mode;
+
+    public DbManage getDbManage() {
+        return dbManage;
+    }
 
     public BackIrData(Context context) {
         mContext = context;
         dbManage = new DbManage(context);
-        temperature = 25;
-        blowVol = 1;
-        manualWind = 2;
-        autoWind = 1;
-        power = 0;
-        mode = 1;
     }
 
-//    private final class AirData {
-//        /* 7B0: 其中第0个字节：数据为对应空调的温度：19－30度(0x13-0x1e),默认：25度;十六进制,与显示对应,通过温度加减键调节 */
-//     /* 7B1:其中第1个字节：风量数据：自动：01,低：02,中：03,高：04,与显示对应：默认：01,相关显示符号参考样机） */
-//     /* 7B2:其中第2个字节：手动风向：向下：03,中：02,向上：01,默认02,与显示对应; */
-//     /* 7B3:其中第3个字节：自动风向：01,打开,00,关,默认开:01,与显示对应 */
-//     /* 7B4:其中第4个字节：开关数据：开机时：0x01,关机时：0x00,通过按开关机(电源）键实现,开机后,其它键才有效,相关符号才显示) */
-//     /* 7B5:其中第5个字节：键名对应数据,电源：0x01,模式：0x02,风量：0x03,手动风向：0x04, */
-//                    /*       自动风向：0x05,温度加：0x06,  温度减：0x07, /* 表示当前按下的是哪个键 */
-//     /* 7B6:其中第6个字节：模式对应数据和显示：自动(默认）：0x01,制冷：0X02,抽湿：0X03,送风：0x04;制热：0x05,这些值按模式键实现 */
-//        public int temperature;
-//        public int blowVol;
-//        public int manualWind;
-//        public int autoWind;
-//        public int power;
-//        public int mode;
-//
-//        public AirData(int id) {
-////            temperature = 25;
-////            blowVol = 1;
-////            manualWind = 2;
-////            autoWind = 1;
-//            power = 0;
-////            mode = 1;
-////            setAirContolData(id);
-//        }
-//
-////        public byte[] airContolData(int key, int id) {
-////            byte[] result = new byte[7];
-////            result[5] = (byte) (key + 1);
-////            switch (key) {
-////                case Constants.AIR.AIR_Power://电源
-////                    if (power == 0) {
-////                        power = 1;
-////                    } else if (power == 1) {
-////                        power = 0;
-////                    }
-////                    result[4] = (byte) power;
-////                    break;
-////                case Constants.AIR.AIR_Mode://模式
-////                    if (mode < 5) {
-////                        mode++;
-////                    } else {
-////                        mode = 1;
-////                    }
-////                    result[6] = (byte) mode;
-////                    break;
-////                case Constants.AIR.AIR_Vol://风量
-////                    if (blowVol < 4) {
-////                        blowVol++;
-////                    } else {
-////                        blowVol = 1;
-////                    }
-////                    result[1] = (byte) blowVol;
-////                    break;
-////                case Constants.AIR.AIR_M://手动风向
-////                    if (manualWind > 1) {
-////                        manualWind--;
-////                    } else {
-////                        manualWind = 3;
-////                    }
-////                    result[2] = (byte) manualWind;
-////                    break;
-////                case Constants.AIR.AIR_A://自动风向
-////                    if (autoWind == 0) {
-////                        autoWind = 1;
-////                    } else if (autoWind == 1) {
-////                        autoWind = 0;
-////                    }
-////                    result[3] = (byte) autoWind;
-////                    break;
-////                case Constants.AIR.AIR_tmpAdd://温度＋
-////                    if (temperature < 30) {
-////                        temperature++;
-////                    }
-////                    result[0] = (byte) temperature;
-////                    break;
-////                case Constants.AIR.AIR_tmpRed://温度－
-////                    if (temperature > 16) {
-////                        temperature--;
-////                    }
-////                    result[0] = (byte) temperature;
-////                    break;
-////                default:
-////                    break;
-////
-////            }
-////            return result;
-////        }
-//    }
-
-    private byte[] airContolData(int key) {
+/* 7B0: 其中第0个字节：数据为对应空调的温度：19－30度(0x13-0x1e),默认：25度;十六进制,与显示对应,通过温度加减键调节 */
+/* 7B1:其中第1个字节：风量数据：自动：01,低：02,中：03,高：04,与显示对应：默认：01,相关显示符号参考样机） */
+/* 7B2:其中第2个字节：手动风向：向下：03,中：02,向上：01,默认02,与显示对应; */
+/* 7B3:其中第3个字节：自动风向：01,打开,00,关,默认开:01,与显示对应 */
+/* 7B4:其中第4个字节：开关数据：开机时：0x01,关机时：0x00,通过按开关机(电源）键实现,开机后,其它键才有效,相关符号才显示) */
+/* 7B5:其中第5个字节：键名对应数据,电源：0x01,模式：0x02,风量：0x03,手动风向：0x04, */
+                        /*       自动风向：0x05,温度加：0x06,  温度减：0x07, /* 表示当前按下的是哪个键 */
+/* 7B6:其中第6个字节：模式对应数据和显示：自动(默认）：0x01,制冷：0X02,抽湿：0X03,送风：0x04;制热：0x05,这些值按模式键实现 */
+    private byte[] airContolData(int key, int index) {
         byte[] result = new byte[7];
+        AirControlData airControlData = dbManage.getAirControlData(key, index);//初始化红外控制数据
+
         result[5] = (byte) (key + 1);
         switch (key) {
             case Constants.IR_AIR_CLASS.AIR_POWER://电源
-                if (power == 0) {
-                    power = 1;
-                } else if (power == 1) {
-                    power = 0;
+                if (airControlData.getPower() == 0) {
+                    airControlData.setPower(1);
+                } else if (airControlData.getPower() == 1) {
+                    airControlData.setPower(0);
                 }
-                result[4] = (byte) power;
+                result[4] = (byte) airControlData.getPower();
                 break;
             case Constants.IR_AIR_CLASS.AIR_MODE://模式
+                int mode = airControlData.getMode();
                 if (mode < 5) {
                     mode++;
+                    airControlData.setMode(mode);
                 } else {
-                    mode = 1;
+                    airControlData.setMode(1);
                 }
-                result[6] = (byte) mode;
+                result[6] = (byte) airControlData.getMode();
                 break;
             case Constants.IR_AIR_CLASS.AIR_VOL://风量
-                if (blowVol < 4) {
-                    blowVol++;
+                int vol = airControlData.getVol();
+                if (vol < 4) {
+                    vol++;
+                    airControlData.setVol(vol);
                 } else {
-                    blowVol = 1;
+                    airControlData.setVol(1);
                 }
-                result[1] = (byte) blowVol;
+                result[1] = (byte) airControlData.getVol();
                 break;
             case Constants.IR_AIR_CLASS.AIR_M://手动风向
-                if (manualWind > 1) {
-                    manualWind--;
+                int m = airControlData.getManualWind();
+                if (m > 1) {
+                    m--;
+                    airControlData.setManualWind(m);
                 } else {
-                    manualWind = 3;
+                    airControlData.setManualWind(3);
                 }
-                result[2] = (byte) manualWind;
+                result[2] = (byte) airControlData.getManualWind();
                 break;
             case Constants.IR_AIR_CLASS.AIR_A://自动风向
-                if (autoWind == 0) {
-                    autoWind = 1;
-                } else if (autoWind == 1) {
-                    autoWind = 0;
+                if (airControlData.getAutoWind() == 0) {
+                    airControlData.setAutoWind(1);
+
+                } else if (airControlData.getAutoWind() == 1) {
+                    airControlData.setAutoWind(0);
                 }
-                result[3] = (byte) autoWind;
+                result[3] = (byte) airControlData.getAutoWind();
                 break;
             case Constants.IR_AIR_CLASS.AIR_TMP_ADD://温度＋
-                if (temperature < 30) {
-                    temperature++;
+                int tempAdd = airControlData.getTemp();
+                if (tempAdd < 30) {
+                    tempAdd++;
+                    airControlData.setTemp(tempAdd);
                 }
-                result[0] = (byte) temperature;
+                result[0] = (byte) airControlData.getTemp();
                 break;
             case Constants.IR_AIR_CLASS.AIR_TMP_RED://温度－
-                if (temperature > 16) {
-                    temperature--;
+                int tempRed = airControlData.getTemp();
+                if (tempRed > 16) {
+                    tempRed--;
+                    airControlData.setTemp(tempRed);
                 }
-                result[0] = (byte) temperature;
+                result[0] = (byte) airControlData.getTemp();
                 break;
             default:
                 break;
 
         }
+        airControlData.setIndex(index);
+        dbManage.insertAirControlData(airControlData);//保存红外控制数据
         return result;
     }
 
-    public byte[] analyzeData(int electricType, byte[] irData, int key) {
+    public void deleteAirControlData(int index) {
+        dbManage.deleteAirControlData(index);//删除红外控制数据
+    }
+
+    public byte[] analyzeData(int electricType, byte[] irData, int key, int index) {
         byte checkSum = 0;
         byte[] tempArray = null;
         switch (electricType) {
             case Constants.IR_AIR:
+                dbManage.createAirControlData();
                 tempArray = new byte[13 + irData.length];
-                byte[] airContolDataArray = airContolData(key);
+                byte[] airContolDataArray = airContolData(key, index);
                 tempArray[0] = 0x30;
                 tempArray[1] = 0x01;
-                tempArray[2] = (byte) (dbManage.getSerialNum() >> 8);
-                tempArray[3] = (byte) dbManage.getSerialNum();
+                tempArray[2] = 0x00;
+                tempArray[3] = 0x00;
+//                tempArray[2] = (byte) (dbManage.getSerialNum() >> 8);
+//                tempArray[3] = (byte) dbManage.getSerialNum();
                 for (int i = 0; i < 7; i++) {
                     tempArray[4 + i] = airContolDataArray[0];
                 }
@@ -252,35 +181,4 @@ public class BackIrData {
         return dbManage.getIntelligentIndexLength(electricType, serial);
     }
 
-//    private void setAirContolData(int id) {
-//        SharedPreferences.Editor editor = mContext.getSharedPreferences("airControlData", Context.MODE_PRIVATE).edit();
-//        editor.putInt("temperature" + id, airData.temperature);
-//        editor.putInt("blowVol" + id, airData.blowVol);
-//        editor.putInt("manualWind" + id, airData.manualWind);
-//        editor.putInt("autoWind" + id, airData.autoWind);
-////        editor.putInt("power",arcData.power);
-//        editor.putInt("mode" + id, airData.mode);
-//        editor.apply();
-//    }
-
-//    private void removeAirContolData(int id) {
-//        SharedPreferences.Editor editor = mContext.getSharedPreferences("airControlData", Context.MODE_PRIVATE).edit();
-//        editor.remove("temperature" + id);
-//        editor.remove("blowVol" + id);
-//        editor.remove("manualWind" + id);
-//        editor.remove("autoWind" + id);
-////        editor.putInt("power",arcData.power);
-//        editor.remove("mode" + id);
-//        editor.commit();
-//    }
-//
-//    private void getAirContolData(int id) {
-//        SharedPreferences preferences = mContext.getSharedPreferences("airControlData", Context.MODE_PRIVATE);
-//        airData.temperature = preferences.getInt("temperature" + id, 25);
-//        airData.blowVol = preferences.getInt("blowVol" + id, 1);
-//        airData.manualWind = preferences.getInt("manualWind" + id, 2);
-//        airData.autoWind = preferences.getInt("autoWind" + id, 1);
-////        arcData.power = preferences.getInt("power",0);
-//        airData.mode = preferences.getInt("mode" + id, 1);
-//    }
 }

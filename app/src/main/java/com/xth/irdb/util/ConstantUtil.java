@@ -73,8 +73,8 @@ public class ConstantUtil {
                     result[0] = length;
                     length = 1;
                 }else{
-                    result[length] = codeArrayToInt(tempCharArray,index - 1);
-                    length ++;
+                        result[length] = codeArrayToInt(tempCharArray,index - 1);
+                        length ++;
                 }
                 index = 0;
             }else{
