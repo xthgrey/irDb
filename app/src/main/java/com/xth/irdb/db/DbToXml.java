@@ -51,7 +51,7 @@ public class DbToXml {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            LogUtil.i("id:" + id + "---serial:" + serial + "---getBrandCn:" + brandCn + "---getBrandEn:" + brandEn +
+            LogUtil.v("id:" + id + "---serial:" + serial + "---getBrandCn:" + brandCn + "---getBrandEn:" + brandEn +
                     "---model:" + model + "---code:" + code);
         }
         if (writer != null) {

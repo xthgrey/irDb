@@ -159,7 +159,7 @@ public class BackIrData {
                     checkSum += tempArray[j];
                 }
                 tempArray[9] = checkSum;
-                LogUtil.i("analyzeData" + ConstantUtil.bytes2HexString(tempArray));
+                LogUtil.v("analyzeData" + ConstantUtil.bytes2HexString(tempArray));
                 break;
         }
         return tempArray;

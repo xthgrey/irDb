@@ -23,8 +23,8 @@ import java.io.InputStream;
 
 public class DbManage {
     private static final String DbName = "irlibaray.db";
-//    private static final String PacketName = "com.drkon.sh.innolumi.inno_lumi_text";
-    private static final String PacketName = "com.xth.irdb";
+    private static final String PacketName = "com.drkon.sh.innolumi.inno_lumi_text";
+//    private static final String PacketName = "com.xth.irdb";
     private static final String DbPath = "/data" + Environment.getDataDirectory().getAbsolutePath() + "/" + PacketName;
     private static final String DbPathName = DbPath + "/" + DbName;
     private SQLiteDatabase database;
@@ -33,11 +33,11 @@ public class DbManage {
 
     private AirControlData airControlData;
     private DbData dbData;
-    private DbData dbDataInfo;
+//    private DbData dbDataInfo;
 
-    public DbData getDbDataInfo() {
-        return dbDataInfo;
-    }
+//    public DbData getDbDataInfo() {
+//        return dbDataInfo;
+//    }
 
     public DbData getDbData() {
         return dbData;
@@ -51,11 +51,11 @@ public class DbManage {
         openDb();
         airControlData = new AirControlData();
         dbData = new DbData();
-        dbDataInfo = new DbData();
+//        dbDataInfo = new DbData();
     }
 
     private void openDb() {
-//        if (!new File(DbPathName).exists()) {
+        if (!new File(DbPathName).exists()) {
             // 如 SQLite 数据库文件不存在，再检查一下 database 目录是否存在
             File f = new File(DbPath);
             // 如 database 目录不存在，新建该目录
@@ -76,7 +76,7 @@ public class DbManage {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-//        }
+        }
         database = SQLiteDatabase.openOrCreateDatabase(DbPathName, null);
     }
 
@@ -106,11 +106,12 @@ public class DbManage {
             //遍历出表名
             String name = cursor.getString(0);
             LogUtil.v("tableName: " + name);
-            if (name.equals(tableName) == true) {
+            if (name.equals(tableName)) {
                 flag = true;
             }
         }
-        if (flag == false) {
+        cursor.close();
+        if (!flag) {
             LogUtil.v("createTable: " + createTable);
             database.execSQL(createTable);
         }
@@ -135,6 +136,7 @@ public class DbManage {
                 flag = true;
             }
         }
+        cursor.close();
         if (!flag) {
             //LogUtil.v("createTable: " + createTable);
             database.execSQL(createTable);
@@ -191,6 +193,7 @@ public class DbManage {
             airControlData.setPower(0);
             airControlData.setMode(1);
         }
+        cursor.close();
         return airControlData;
     }
 
@@ -222,9 +225,9 @@ public class DbManage {
         dbData.setModel(cursor.getString(4));
         dbData.setCodeInt(cursor.getInt(5));
 
-        dbDataInfo.setBrandCn(dbData.getBrandCn());
-        dbDataInfo.setBrandEn(dbData.getBrandEn());
-        dbDataInfo.setModel(dbData.getModel());
+//        dbDataInfo.setBrandCn(dbData.getBrandCn());
+//        dbDataInfo.setBrandEn(dbData.getBrandEn());
+//        dbDataInfo.setModel(dbData.getModel());
 
         cursor.close();
         return dbData.getCodeInt();
@@ -239,9 +242,9 @@ public class DbManage {
         dbData.setModel(cursor.getString(4));
         dbData.setCodeString(cursor.getString(5));
 
-        dbDataInfo.setBrandCn(dbData.getBrandCn());
-        dbDataInfo.setBrandEn(dbData.getBrandEn());
-        dbDataInfo.setModel(dbData.getModel());
+//        dbDataInfo.setBrandCn(dbData.getBrandCn());
+//        dbDataInfo.setBrandEn(dbData.getBrandEn());
+//        dbDataInfo.setModel(dbData.getModel());
 
         cursor.close();
         return dbData.getCodeString();
