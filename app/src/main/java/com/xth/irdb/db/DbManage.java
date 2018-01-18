@@ -24,12 +24,17 @@ import java.io.InputStream;
 public class DbManage {
     private static final String DbName = "irlibaray.db";
     private static final String PacketName = "com.drkon.sh.innolumi.inno_lumi_text";
-//    private static final String PacketName = "com.xth.irdb";
+    //    private static final String PacketName = "com.xth.irdb";
     private static final String DbPath = "/data" + Environment.getDataDirectory().getAbsolutePath() + "/" + PacketName;
     private static final String DbPathName = DbPath + "/" + DbName;
     private SQLiteDatabase database;
     private Context mContext;
     private int[] intelligentSerial;
+    private int airOneKeySerial;
+
+    public int getAirOneKeySerial() {
+        return airOneKeySerial;
+    }
 
     private AirControlData airControlData;
     private DbData dbData;
@@ -42,8 +47,6 @@ public class DbManage {
     public DbData getDbData() {
         return dbData;
     }
-
-
 
 
     public DbManage(Context context) {
@@ -116,11 +119,12 @@ public class DbManage {
             database.execSQL(createTable);
         }
     }
+
     protected void createAirControlData() {
         boolean flag = false;
         String createTable = "create table " + Constants.air_control_table + " (" +
                 "ID integer primary key autoincrement," +
-                "INDEX integer," +
+                "MINDEX integer," +
                 "TEMP integer," +
                 "VOL integer," +
                 "M integer," +
@@ -145,12 +149,12 @@ public class DbManage {
 
     protected void insertAirControlData(AirControlData airControlData) {
         this.airControlData = airControlData;
-        if(airControlData.getIndex() == -1){
+        if (airControlData.getIndex() == -1) {
             return;
         }
         //实例化常量值
         ContentValues cValue = new ContentValues();
-        cValue.put("INDEX", airControlData.getIndex());
+        cValue.put("MINDEX", airControlData.getIndex());
         cValue.put("TEMP", airControlData.getTemp());
         cValue.put("VOL", airControlData.getVol());
         cValue.put("M", airControlData.getManualWind());
@@ -159,24 +163,26 @@ public class DbManage {
         cValue.put("MODE", airControlData.getMode());
         database.insert(Constants.air_control_table, null, cValue);
     }
+
     protected void deleteAirControlData(int index) {
-        database.delete(Constants.air_control_table, "INDEX = ?", new String[]{index + ""});
+        database.delete(Constants.air_control_table, "MINDEX = ?", new String[]{index + ""});
     }
-    protected AirControlData getAirControlData(int key,int index) {
-        if(index == -1){
-            if(key == Constants.IR_AIR_CLASS.AIR_POWER && airControlData.getPower() == 0){
+
+    protected AirControlData getAirControlData(int index) {
+        if (index == -1) {
+            if (airControlData.getPower() == 0) {
                 airControlData.setIndex(index);
                 airControlData.setTemp(25);
                 airControlData.setVol(1);
                 airControlData.setManualWind(2);
                 airControlData.setAutoWind(1);
                 airControlData.setPower(0);
-                airControlData.setMode(1);
-                return airControlData;
+                airControlData.setMode(2);
             }
+            return airControlData;
         }
-        Cursor cursor = database.query(Constants.air_control_table, null, "INDEX = ?", new String[]{index + ""}, null, null, null);
-        if(cursor.moveToNext()){
+        Cursor cursor = database.query(Constants.air_control_table, null, "MINDEX = ?", new String[]{index + ""}, null, null, null);
+        if (cursor.moveToNext()) {
             airControlData.setIndex(index);
             airControlData.setTemp(cursor.getInt(2));
             airControlData.setVol(cursor.getInt(3));
@@ -184,20 +190,20 @@ public class DbManage {
             airControlData.setAutoWind(cursor.getInt(5));
             airControlData.setPower(cursor.getInt(6));
             airControlData.setMode(cursor.getInt(7));
-        }else{
+        } else {
             airControlData.setIndex(index);
             airControlData.setTemp(25);
             airControlData.setVol(1);
             airControlData.setManualWind(2);
             airControlData.setAutoWind(1);
             airControlData.setPower(0);
-            airControlData.setMode(1);
+            airControlData.setMode(2);
         }
         cursor.close();
         return airControlData;
     }
 
-    protected void insert(String tableName, int serial, String brandCn, String brandEn,String model,byte[] code) {
+    protected void insert(String tableName, int serial, String brandCn, String brandEn, String model, byte[] code) {
         //实例化常量值
         ContentValues cValue = new ContentValues();
         cValue.put("SERIAL", serial);
@@ -252,8 +258,12 @@ public class DbManage {
 
     protected byte[] getOneKeyMatchSerial(int electricType, byte[] learnData, int brandIndex) {
         int lastSameCounter = 0;
-        int serial = 0;
+        int sameCounter = 0;
+        int serial = -1;
         Cursor cursor = null;
+        byte[] revDataTemp = new byte[230];
+        revDataTemp[0] = 0x00;
+        System.arraycopy(learnData,2,revDataTemp,1,229);
         if (electricType == Constants.IR_STB || electricType == Constants.IR_DVD || electricType == Constants.IR_TV || electricType == Constants.IR_AUDIO) {
             cursor = database.query(Constants.fileName[1][electricType], null, "SERIAL = ?", new String[]{brandIndex + ""}, null, null, null);
             String brandCn = cursor.getString(2);
@@ -263,7 +273,7 @@ public class DbManage {
             while (cursor.moveToNext()) {
                 brandSerial++;
                 byte[] code = cursor.getBlob(5);
-                int sameCounter = compareIrData(code, learnData);
+                sameCounter = compareIrData(code, revDataTemp);
                 if (sameCounter > lastSameCounter) {
                     lastSameCounter = sameCounter;
                     serial = brandSerial;
@@ -271,32 +281,45 @@ public class DbManage {
             }
             cursor.close();
             getIntelligentIndexLength(electricType, brandIndex);
-            return modelMatch(electricType, intelligentSerial[serial + 1]);
+            if (serial == -1) {
+                return null;
+            } else {
+                return modelMatch(electricType, intelligentSerial[serial + 1]);
+            }
+
         } else {
             cursor = database.query(Constants.fileName[3][electricType], null, null, null, null, null, null);
             while (cursor.moveToNext()) {
                 byte[] code = cursor.getBlob(5);
-                int sameCounter = compareIrData(code, learnData);
+                sameCounter = compareIrData(code, revDataTemp);
                 if (sameCounter > lastSameCounter) {
                     lastSameCounter = sameCounter;
                     serial = cursor.getInt(1);
                 }
             }
+            LogUtil.e("lastSameCounter:" + lastSameCounter + "--sameCounter:" + sameCounter + "--serial:" + serial);
             cursor.close();
-            return modelMatch(electricType, serial);
+            if (serial == -1) {
+                return null;
+            } else {
+                return modelMatch(electricType, serial);
+            }
         }
     }
 
     private int compareIrData(byte[] dbData, byte[] revData) {
         int sameCount = 0;
         boolean ffFlag = false;
+        boolean CheckfxxfFlag = false;
+
         if (dbData.length != 230 && revData.length != 230) {
-            return 0;
+            return -2;
         }
+
         for (int i = 0; i < 230; i++) {
             if (i < 4) {
                 if (dbData[i] != revData[i]) {
-                    return 0;
+                    return -3;
                 } else {
                     sameCount++;
                 }
@@ -317,35 +340,32 @@ public class DbManage {
                                 if (revData[i] == dbData[i]) {
                                     sameCount++;
                                 }
+                                CheckfxxfFlag = true;
+                                if (((revData[i] & 0x0f) == 0x0f) || ((revData[i] & 0xf0) == 0xf0)) {
+                                    if (((dbData[i] & 0x0f) == 0x0f) || ((dbData[i] & 0xf0) == 0xf0)) {
+                                        break;
+                                    }
+                                }
                             }
                         }
-                    } else {
-                        return 0;
                     }
                 } else if (revData[i] == 0xff) {
                     if (dbData[i] == 0xff) {
                         ffFlag = true;
-                        sameCount++;
-                    } else {
-                        return 0;
-                    }
-                }
-                if (ffFlag) {
-                    if (((revData[i] & 0x0f) == 0x0f) || ((revData[i] & 0xf0) == 0xf0)) {
-                        if (((dbData[i] & 0x0f) == 0x0f) || ((dbData[i] & 0xf0) == 0xf0)) {
-                            return sameCount;
-                        } else {
-                            return 0;
+                        if (CheckfxxfFlag) {
+                            break;
                         }
+                        sameCount++;
                     }
                 }
             }
         }
-        return 0;
+        return sameCount;
     }
 
 
     private byte[] modelMatch(int electricType, int serial) {
+        airOneKeySerial = serial;
         Cursor cursor = database.query(Constants.fileName[0][electricType], null, "SERIAL = ?", new String[]{serial + ""}, null, null, null);
         cursor.moveToNext();
         dbData.setId(cursor.getInt(0));
@@ -354,6 +374,7 @@ public class DbManage {
         dbData.setModel(cursor.getString(4));
         dbData.setCodeByteArray(cursor.getBlob(5));
         cursor.close();
+        LogUtil.e("匹配：品牌：" + dbData.getBrandCn() + "--型号：" + dbData.getModel());
         return dbData.getCodeByteArray();
     }
 

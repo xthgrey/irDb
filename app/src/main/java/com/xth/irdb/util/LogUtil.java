@@ -18,7 +18,7 @@ public class LogUtil {
     public static final int WARNING = 4;
     public static final int ERROR = 5;
     public static final int NOTHING = 6;
-    private static int level = NOTHING;
+    private static int level = VERBOSE;
     private static final String TAG = "XTH:";
 
     public static void v(String msg){

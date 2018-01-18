@@ -34,9 +34,7 @@ public class BackIrData {
 /* 7B6:其中第6个字节：模式对应数据和显示：自动(默认）：0x01,制冷：0X02,抽湿：0X03,送风：0x04;制热：0x05,这些值按模式键实现 */
     private byte[] airContolData(int key, int index) {
         byte[] result = new byte[7];
-        AirControlData airControlData = dbManage.getAirControlData(key, index);//初始化红外控制数据
-
-        result[5] = (byte) (key + 1);
+        AirControlData airControlData = dbManage.getAirControlData(index);//初始化红外控制数据
         switch (key) {
             case Constants.IR_AIR_CLASS.AIR_POWER://电源
                 if (airControlData.getPower() == 0) {
@@ -44,7 +42,6 @@ public class BackIrData {
                 } else if (airControlData.getPower() == 1) {
                     airControlData.setPower(0);
                 }
-                result[4] = (byte) airControlData.getPower();
                 break;
             case Constants.IR_AIR_CLASS.AIR_MODE://模式
                 int mode = airControlData.getMode();
@@ -54,7 +51,6 @@ public class BackIrData {
                 } else {
                     airControlData.setMode(1);
                 }
-                result[6] = (byte) airControlData.getMode();
                 break;
             case Constants.IR_AIR_CLASS.AIR_VOL://风量
                 int vol = airControlData.getVol();
@@ -64,7 +60,6 @@ public class BackIrData {
                 } else {
                     airControlData.setVol(1);
                 }
-                result[1] = (byte) airControlData.getVol();
                 break;
             case Constants.IR_AIR_CLASS.AIR_M://手动风向
                 int m = airControlData.getManualWind();
@@ -74,7 +69,6 @@ public class BackIrData {
                 } else {
                     airControlData.setManualWind(3);
                 }
-                result[2] = (byte) airControlData.getManualWind();
                 break;
             case Constants.IR_AIR_CLASS.AIR_A://自动风向
                 if (airControlData.getAutoWind() == 0) {
@@ -83,7 +77,6 @@ public class BackIrData {
                 } else if (airControlData.getAutoWind() == 1) {
                     airControlData.setAutoWind(0);
                 }
-                result[3] = (byte) airControlData.getAutoWind();
                 break;
             case Constants.IR_AIR_CLASS.AIR_TMP_ADD://温度＋
                 int tempAdd = airControlData.getTemp();
@@ -91,7 +84,6 @@ public class BackIrData {
                     tempAdd++;
                     airControlData.setTemp(tempAdd);
                 }
-                result[0] = (byte) airControlData.getTemp();
                 break;
             case Constants.IR_AIR_CLASS.AIR_TMP_RED://温度－
                 int tempRed = airControlData.getTemp();
@@ -99,7 +91,6 @@ public class BackIrData {
                     tempRed--;
                     airControlData.setTemp(tempRed);
                 }
-                result[0] = (byte) airControlData.getTemp();
                 break;
             default:
                 break;
@@ -107,6 +98,13 @@ public class BackIrData {
         }
         airControlData.setIndex(index);
         dbManage.insertAirControlData(airControlData);//保存红外控制数据
+        result[6] = (byte) airControlData.getMode();
+        result[5] = (byte) (key + 1);
+        result[4] = (byte) airControlData.getPower();
+        result[3] = (byte) airControlData.getAutoWind();
+        result[2] = (byte) airControlData.getManualWind();
+        result[1] = (byte) airControlData.getVol();
+        result[0] = (byte) airControlData.getTemp();
         return result;
     }
 
@@ -124,18 +122,18 @@ public class BackIrData {
                 byte[] airContolDataArray = airContolData(key, index);
                 tempArray[0] = 0x30;
                 tempArray[1] = 0x01;
-                tempArray[2] = 0x00;
-                tempArray[3] = 0x00;
-//                tempArray[2] = (byte) (dbManage.getSerialNum() >> 8);
-//                tempArray[3] = (byte) dbManage.getSerialNum();
+//                tempArray[2] = 0x00;
+//                tempArray[3] = 0x00;
+                tempArray[2] = (byte) (dbManage.getAirOneKeySerial() >> 8);
+                tempArray[3] = (byte) dbManage.getAirOneKeySerial();
                 for (int i = 0; i < 7; i++) {
-                    tempArray[4 + i] = airContolDataArray[0];
+                    tempArray[4 + i] = airContolDataArray[i];
                 }
                 for (int i = 0; i < irData.length; i++) {
                     if (i == 0) {
                         tempArray[11] = (byte) (irData[0] + 1);
                     } else {
-                        tempArray[11 + i] = irData[0];
+                        tempArray[11 + i] = irData[i];
                     }
                 }
                 tempArray[11 + irData.length] = (byte) 0xff;
