@@ -38,7 +38,7 @@ task deleteBuild(type: Delete) {
 
 task makeJar(type: Jar) {
     from zipTree(zipFile)
-//    from fileTree(dir: 'src/main',includes: ['assets/**'])//将assets目录打入jar包
+ //   from fileTree(dir: 'src/main',includes: ['assets/**'])//将assets目录打入jar包
     baseName = SDK_BASENAME + SDK_VERSION
     destinationDir = file(sdkDestinationPath)
 }
