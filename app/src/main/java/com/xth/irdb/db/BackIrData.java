@@ -97,7 +97,7 @@ public class BackIrData {
 
         }
         airControlData.setIndex(index);
-        dbManage.insertAirControlData(airControlData);//保存红外控制数据
+        dbManage.saveAirControlData(airControlData);//保存红外控制数据
         result[6] = (byte) airControlData.getMode();
         result[5] = (byte) (key + 1);
         result[4] = (byte) airControlData.getPower();

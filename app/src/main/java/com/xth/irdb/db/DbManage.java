@@ -147,7 +147,7 @@ public class DbManage {
         }
     }
 
-    protected void insertAirControlData(AirControlData airControlData) {
+    private void insertAirControlData(AirControlData airControlData) {
         this.airControlData = airControlData;
         if (airControlData.getIndex() == -1) {
             return;
@@ -162,6 +162,35 @@ public class DbManage {
         cValue.put("POWER", airControlData.getPower());
         cValue.put("MODE", airControlData.getMode());
         database.insert(Constants.air_control_table, null, cValue);
+    }
+    private void updateAirControlData(AirControlData airControlData) {
+        this.airControlData = airControlData;
+        if (airControlData.getIndex() == -1) {
+            return;
+        }
+        //实例化常量值
+        ContentValues cValue = new ContentValues();
+        cValue.put("MINDEX", airControlData.getIndex());
+        cValue.put("TEMP", airControlData.getTemp());
+        cValue.put("VOL", airControlData.getVol());
+        cValue.put("M", airControlData.getManualWind());
+        cValue.put("A", airControlData.getAutoWind());
+        cValue.put("POWER", airControlData.getPower());
+        cValue.put("MODE", airControlData.getMode());
+        database.update(Constants.air_control_table,cValue, "MINDEX = ?", new String[]{airControlData.getIndex() + ""} );
+    }
+    protected void saveAirControlData(AirControlData airControlData) {
+        this.airControlData = airControlData;
+        if (airControlData.getIndex() == -1) {
+            return;
+        }
+        Cursor cursor = database.query(Constants.air_control_table, null, "MINDEX = ?", new String[]{airControlData.getIndex() + ""}, null, null, null);
+        if(cursor.moveToNext()){
+            updateAirControlData(airControlData);
+        }else{
+            insertAirControlData(airControlData);
+        }
+        cursor.close();
     }
 
     protected void deleteAirControlData(int index) {
